@@ -145,9 +145,3 @@ func (this *ArrayList) Resize(cap int) error {
 	this.size = cap
 	return nil
 }
-
-// func (this *ArrayList) Sort() {
-// 	if this.size < 2 {
-// 		return
-// 	}
-// }
