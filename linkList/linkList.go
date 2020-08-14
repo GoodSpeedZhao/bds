@@ -23,6 +23,13 @@ func NewLinkList() *LinkList {
 	}
 }
 
+func NewNode(newVal interface{}, newNext *Node) *Node {
+	return &Node{
+		Val:  newVal,
+		Next: newNext,
+	}
+}
+
 func (this *LinkList) Get(index int) (interface{}, error) {
 	if !this.withinRange(index) {
 		return nil, errors.New("out of range.")
@@ -66,9 +73,7 @@ func (this *LinkList) Insert(index int, newVal ...interface{}) error {
 	}
 
 	for _, val := range newVal {
-		tmp := new(Node)
-		tmp.Val = val
-		tmp.Next = e.Next
+		tmp := NewNode(val, e.Next)
 		e.Next = tmp
 		e = tmp
 	}
@@ -112,8 +117,7 @@ func (this *LinkList) Delete(index int) error {
 
 func (this *LinkList) Append(newVal ...interface{}) {
 	for _, val := range newVal {
-		tmp := new(Node)
-		tmp.Val = val
+		tmp := NewNode(val, nil)
 		if this.head == nil && this.tail == nil {
 			this.head = tmp
 			this.tail = tmp
@@ -128,14 +132,11 @@ func (this *LinkList) Append(newVal ...interface{}) {
 
 func (this *LinkList) Prepend(newVal ...interface{}) {
 	for _, val := range newVal {
-		tmp := new(Node)
-		tmp.Val = val
-		if this.head == nil && this.tail == nil {
-			this.head = tmp
+		tmp := NewNode(val, this.head)
+
+		this.head = tmp
+		if this.tail == nil {
 			this.tail = tmp
-		} else {
-			tmp.Next = this.head
-			this.head = tmp
 		}
 	}
 	this.size += len(newVal)

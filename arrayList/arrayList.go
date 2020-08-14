@@ -10,10 +10,18 @@ type ArrayList struct {
 }
 
 func NewArrayList(newVal ...interface{}) *ArrayList {
-	return &ArrayList{
-		dataStore: make([]interface{}, len(newVal)),
-		size:      len(newVal),
+	arrayList := &ArrayList{
+		size: len(newVal),
 	}
+
+	if newVal != nil {
+		arrayList.dataStore = make([]interface{}, len(newVal))
+		copy(arrayList.dataStore, newVal)
+	} else {
+		arrayList.dataStore = []interface{}{}
+	}
+
+	return arrayList
 }
 
 func (this *ArrayList) Get(index int) (interface{}, error) {
@@ -76,7 +84,9 @@ func (this *ArrayList) Append(newVal ...interface{}) {
 }
 
 func (this *ArrayList) Prepend(newVal ...interface{}) {
-	this.dataStore = append(newVal, this.dataStore...)
+	for i := 0; i < len(newVal); i++ {
+		this.dataStore = append([]interface{}{newVal[i]}, this.dataStore...)
+	}
 	this.size += len(newVal)
 }
 
@@ -105,12 +115,12 @@ func (this *ArrayList) Contains(values ...interface{}) bool {
 }
 
 func (this *ArrayList) Swap(i, j int) error {
-	if i == j {
-		return nil
-	}
-
 	if !this.withinRange(i) || !this.withinRange(j) {
 		return errors.New("out of range.")
+	}
+
+	if i == j {
+		return nil
 	}
 
 	this.dataStore[i], this.dataStore[j] = this.dataStore[j], this.dataStore[i]
