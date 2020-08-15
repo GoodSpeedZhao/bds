@@ -20,6 +20,12 @@ func NewStack() *Stack {
 }
 
 func NewStackWithCapacity(capacity int) *Stack {
+	if capacity < 0 {
+		capacity = 0
+	} else if capacity > math.MaxUint32 {
+		capacity = math.MaxUint32
+	}
+
 	return &Stack{
 		dataStore: arrayList.NewArrayList(),
 		capacity:  capacity,
