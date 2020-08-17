@@ -20,7 +20,7 @@ func TestNewStack(t *testing.T) {
 				return
 			}
 			if this.dataStore == nil {
-				t.Errorf("got nil, want ArrayList")
+				t.Errorf("got nil, want Stack dataStore")
 			}
 			if this.capacity != math.MaxUint32 {
 				t.Errorf("got %v, want %v", this.capacity, math.MaxUint32)
@@ -50,7 +50,7 @@ func TestNewStackWithCapacity(t *testing.T) {
 				return
 			}
 			if this.dataStore == nil {
-				t.Errorf("got nil, want ArrayList")
+				t.Errorf("got nil, want Stack dataStore")
 			}
 			if this.capacity != tt.want {
 				t.Errorf("got %v, want %v", this.capacity, tt.want)
