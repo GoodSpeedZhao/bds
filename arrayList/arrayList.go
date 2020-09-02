@@ -24,84 +24,84 @@ func NewArrayList(newVal ...interface{}) *ArrayList {
 	return arrayList
 }
 
-func (this *ArrayList) Get(index int) (interface{}, error) {
-	if !this.withinRange(index) {
+func (array *ArrayList) Get(index int) (interface{}, error) {
+	if !array.withinRange(index) {
 		return nil, errors.New("out of range.")
 	}
 
-	return this.dataStore[index], nil
+	return array.dataStore[index], nil
 }
 
-func (this *ArrayList) Set(index int, newVal interface{}) error {
-	if !this.withinRange(index) {
+func (array *ArrayList) Set(index int, newVal interface{}) error {
+	if !array.withinRange(index) {
 		return errors.New("out of range.")
 	}
 
-	this.dataStore[index] = newVal
+	array.dataStore[index] = newVal
 	return nil
 }
 
-func (this *ArrayList) Insert(index int, newVal ...interface{}) error {
-	if !this.withinRange(index) {
+func (array *ArrayList) Insert(index int, newVal ...interface{}) error {
+	if !array.withinRange(index) {
 		return errors.New("out of range.")
 	}
 
-	if index == this.size-1 {
-		this.Append(newVal...)
+	if index == array.size-1 {
+		array.Append(newVal...)
 		return nil
 	}
 
 	newValLen := len(newVal)
 
-	this.dataStore = append(this.dataStore, newVal...)
-	for i := index + 1; i < this.size; i++ {
-		this.dataStore[i+newValLen] = this.dataStore[i]
+	array.dataStore = append(array.dataStore, newVal...)
+	for i := index + 1; i < array.size; i++ {
+		array.dataStore[i+newValLen] = array.dataStore[i]
 	}
 
-	this.size += newValLen
+	array.size += newValLen
 
 	startIdx := index + 1
 	for i := 0; i < newValLen; i++ {
-		this.dataStore[startIdx+i] = newVal[i]
+		array.dataStore[startIdx+i] = newVal[i]
 	}
 
 	return nil
 }
 
-func (this *ArrayList) Delete(index int) error {
-	if !this.withinRange(index) {
+func (array *ArrayList) Delete(index int) error {
+	if !array.withinRange(index) {
 		return errors.New("out of range.")
 	}
 
-	this.dataStore = append(this.dataStore[:index], this.dataStore[index+1:]...)
-	this.size--
+	array.dataStore = append(array.dataStore[:index], array.dataStore[index+1:]...)
+	array.size--
 	return nil
 }
 
-func (this *ArrayList) Append(newVal ...interface{}) {
-	this.dataStore = append(this.dataStore, newVal...)
-	this.size += len(newVal)
+func (array *ArrayList) Append(newVal ...interface{}) {
+	array.dataStore = append(array.dataStore, newVal...)
+	array.size += len(newVal)
 }
 
-func (this *ArrayList) Prepend(newVal ...interface{}) {
+func (array *ArrayList) Prepend(newVal ...interface{}) {
 	for i := 0; i < len(newVal); i++ {
-		this.dataStore = append([]interface{}{newVal[i]}, this.dataStore...)
+		array.dataStore = append([]interface{}{newVal[i]}, array.dataStore...)
 	}
-	this.size += len(newVal)
+	array.size += len(newVal)
 }
 
-func (this *ArrayList) Contains(values ...interface{}) bool {
+func (array *ArrayList) Contains(values ...interface{}) bool {
 	if len(values) == 0 {
 		return true
 	}
 
-	if this.size == 0 {
+	if array.size == 0 {
 		return false
 	}
 
 	for _, val := range values {
 		isExist := false
-		for _, data := range this.dataStore {
+		for _, data := range array.dataStore {
 			if val == data {
 				isExist = true
 				break
@@ -114,8 +114,8 @@ func (this *ArrayList) Contains(values ...interface{}) bool {
 	return true
 }
 
-func (this *ArrayList) Swap(i, j int) error {
-	if !this.withinRange(i) || !this.withinRange(j) {
+func (array *ArrayList) Swap(i, j int) error {
+	if !array.withinRange(i) || !array.withinRange(j) {
 		return errors.New("out of range.")
 	}
 
@@ -123,35 +123,35 @@ func (this *ArrayList) Swap(i, j int) error {
 		return nil
 	}
 
-	this.dataStore[i], this.dataStore[j] = this.dataStore[j], this.dataStore[i]
+	array.dataStore[i], array.dataStore[j] = array.dataStore[j], array.dataStore[i]
 	return nil
 }
 
-func (this *ArrayList) IsEmpty() bool {
-	return this.size == 0
+func (array *ArrayList) IsEmpty() bool {
+	return array.size == 0
 }
 
-func (this *ArrayList) Size() int {
-	return this.size
+func (array *ArrayList) Size() int {
+	return array.size
 }
 
-func (this *ArrayList) withinRange(index int) bool {
-	return index >= 0 && index < this.size
+func (array *ArrayList) withinRange(index int) bool {
+	return index >= 0 && index < array.size
 }
 
-func (this *ArrayList) Clear() {
-	this.dataStore = []interface{}{}
-	this.size = 0
+func (array *ArrayList) Clear() {
+	array.dataStore = []interface{}{}
+	array.size = 0
 }
 
-func (this *ArrayList) Resize(cap int) error {
+func (array *ArrayList) Resize(cap int) error {
 	if cap < 0 {
 		return errors.New("cap less than zero.")
 	}
 
 	newDataStore := make([]interface{}, cap, cap)
-	copy(newDataStore, this.dataStore)
-	this.dataStore = newDataStore
-	this.size = cap
+	copy(newDataStore, array.dataStore)
+	array.dataStore = newDataStore
+	array.size = cap
 	return nil
 }

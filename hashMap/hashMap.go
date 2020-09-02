@@ -10,47 +10,47 @@ func NewHashMap() *Map {
 	}
 }
 
-func (this *Map) Put(key interface{}, value interface{}) {
-	this.dataStore[key] = value
+func (m *Map) Put(key interface{}, value interface{}) {
+	m.dataStore[key] = value
 }
 
-func (this *Map) Get(key interface{}) (val interface{}, ok bool) {
-	val, ok = this.dataStore[key]
+func (m *Map) Get(key interface{}) (val interface{}, ok bool) {
+	val, ok = m.dataStore[key]
 	return
 }
 
-func (this *Map) Delete(key interface{}) {
-	delete(this.dataStore, key)
+func (m *Map) Delete(key interface{}) {
+	delete(m.dataStore, key)
 }
 
-func (this *Map) Size() int {
-	return len(this.dataStore)
+func (m *Map) Size() int {
+	return len(m.dataStore)
 }
 
-func (this *Map) IsEmpty() bool {
-	return this.Size() == 0
+func (m *Map) IsEmpty() bool {
+	return m.Size() == 0
 }
 
-func (this *Map) Keys() []interface{} {
-	keys := make([]interface{}, this.Size())
+func (m *Map) Keys() []interface{} {
+	keys := make([]interface{}, m.Size())
 	count := 0
-	for key := range this.dataStore {
+	for key := range m.dataStore {
 		keys[count] = key
 		count++
 	}
 	return keys
 }
 
-func (this *Map) Values() []interface{} {
-	values := make([]interface{}, this.Size())
+func (m *Map) Values() []interface{} {
+	values := make([]interface{}, m.Size())
 	count := 0
-	for _, val := range this.dataStore {
+	for _, val := range m.dataStore {
 		values[count] = val
 		count++
 	}
 	return values
 }
 
-func (this *Map) Clear() {
-	this.dataStore = make(map[interface{}]interface{})
+func (m *Map) Clear() {
+	m.dataStore = make(map[interface{}]interface{})
 }

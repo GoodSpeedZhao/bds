@@ -28,7 +28,7 @@ func NewNode(newVal interface{}) *Node {
 	}
 }
 
-func (this *BinaryTree) CreateWithLevelOrder(newVal []interface{}) *BinaryTree {
+func CreateWithLevelOrder(newVal []interface{}) *BinaryTree {
 	tree := NewBinaryTree()
 
 	var root *Node
@@ -39,6 +39,7 @@ func (this *BinaryTree) CreateWithLevelOrder(newVal []interface{}) *BinaryTree {
 		que.Append(root)
 		for !que.IsEmpty() {
 			levelCount := que.Size()
+			tree.size += levelCount
 			for i := 0; i < levelCount; i++ {
 				tmp, err := que.Shift()
 				if err != nil {
@@ -49,107 +50,106 @@ func (this *BinaryTree) CreateWithLevelOrder(newVal []interface{}) *BinaryTree {
 					if newVal[curIdx] != nil {
 						tmp.(*Node).left = NewNode(newVal[curIdx])
 						que.Append(tmp.(*Node).left)
-						curIdx++
 					}
 				}
+				curIdx++
 
 				if curIdx < len(newVal) {
 					if newVal[curIdx] != nil {
 						tmp.(*Node).right = NewNode(newVal[curIdx])
 						que.Append(tmp.(*Node).right)
-						curIdx++
 					}
 				}
+				curIdx++
 			}
 		}
 	}
 
 	tree.root = root
-	tree.size = len(newVal)
 
 	return tree
 }
 
-func (this *BinaryTree) PreOrder() []interface{} {
-	if this.IsEmpty() {
+func (bt *BinaryTree) PreOrder() interface{} {
+	if bt.IsEmpty() {
 		return nil
 	}
 
-	values := make([]interface{}, this.size)
-	this.preOrder(this.root, values)
+	values := make([]interface{}, 0, bt.size)
+	bt.preOrder(bt.root, &values)
 	return values
 }
 
-func (this *BinaryTree) preOrder(root *Node, values []interface{}) {
+func (bt *BinaryTree) preOrder(root *Node, values *[]interface{}) {
 	if root == nil {
 		return
 	}
 
-	values = append(values, root.value)
-	this.preOrder(root.left, values)
-	this.preOrder(root.right, values)
+	*values = append(*values, root.value)
+	bt.preOrder(root.left, values)
+	bt.preOrder(root.right, values)
 }
 
-func (this *BinaryTree) InOrder() []interface{} {
-	if this.IsEmpty() {
+func (bt *BinaryTree) InOrder() interface{} {
+	if bt.IsEmpty() {
 		return nil
 	}
 
-	values := make([]interface{}, this.size)
-	this.inOrder(this.root, values)
+	values := make([]interface{}, 0, bt.size)
+	bt.inOrder(bt.root, &values)
 	return values
 }
 
-func (this *BinaryTree) inOrder(root *Node, values []interface{}) {
+func (bt *BinaryTree) inOrder(root *Node, values *[]interface{}) {
 	if root == nil {
 		return
 	}
 
-	this.inOrder(root.left, values)
-	values = append(values, root.value)
-	this.inOrder(root.right, values)
+	bt.inOrder(root.left, values)
+	*values = append(*values, root.value)
+	bt.inOrder(root.right, values)
 }
 
-func (this *BinaryTree) PostOrder() []interface{} {
-	if this.IsEmpty() {
+func (bt *BinaryTree) PostOrder() interface{} {
+	if bt.IsEmpty() {
 		return nil
 	}
 
-	values := make([]interface{}, this.size)
-	this.postOrder(this.root, values)
+	values := make([]interface{}, 0, bt.size)
+	bt.postOrder(bt.root, &values)
 	return values
 }
 
-func (this *BinaryTree) postOrder(root *Node, values []interface{}) {
+func (bt *BinaryTree) postOrder(root *Node, values *[]interface{}) {
 	if root == nil {
 		return
 	}
 
-	this.postOrder(root.left, values)
-	this.postOrder(root.right, values)
-	values = append(values, root.value)
+	bt.postOrder(root.left, values)
+	bt.postOrder(root.right, values)
+	*values = append(*values, root.value)
 }
 
-func (this *BinaryTree) LevelOrder() []interface{} {
-	if this.IsEmpty() {
+func (bt *BinaryTree) LevelOrder() interface{} {
+	if bt.IsEmpty() {
 		return nil
 	}
 
-	values := make([]interface{}, this.size)
+	values := make([]interface{}, 0, bt.size)
 
-	dq := deque.NewDeque()
-	dq.Append(this.root)
-	for !dq.IsEmpty() {
-		if node, err := dq.Shift(); err != nil {
+	queue := deque.NewDeque()
+	queue.Append(bt.root)
+	for !queue.IsEmpty() {
+		if node, err := queue.Shift(); err != nil {
 			return nil
 		} else {
 			popNode := node.(*Node)
 			values = append(values, popNode.value)
 			if popNode.left != nil {
-				dq.Append(popNode.left)
+				queue.Append(popNode.left)
 			}
 			if popNode.right != nil {
-				dq.Append(popNode.right)
+				queue.Append(popNode.right)
 			}
 		}
 	}
@@ -157,35 +157,35 @@ func (this *BinaryTree) LevelOrder() []interface{} {
 	return values
 }
 
-func (this *BinaryTree) IsEmpty() bool {
-	return this.size == 0
+func (bt *BinaryTree) IsEmpty() bool {
+	return bt.size == 0
 }
 
-func (this *BinaryTree) Size() int {
-	return this.size
+func (bt *BinaryTree) Size() int {
+	return bt.size
 }
 
-func (this *BinaryTree) Root() *Node {
-	return this.root
+func (bt *BinaryTree) Root() *Node {
+	return bt.root
 }
 
-func (this *BinaryTree) Clear() {
-	if this.IsEmpty() {
+func (bt *BinaryTree) Clear() {
+	if bt.IsEmpty() {
 		return
 	}
 
-	this.clear(this.root)
-	this.root = nil
-	this.size = 0
+	bt.clear(bt.root)
+	bt.root = nil
+	bt.size = 0
 }
 
-func (this *BinaryTree) clear(root *Node) {
+func (bt *BinaryTree) clear(root *Node) {
 	if root == nil {
 		return
 	}
 
-	this.clear(root.left)
-	this.clear(root.right)
+	bt.clear(root.left)
+	bt.clear(root.right)
 	root.left = nil
 	root.right = nil
 }

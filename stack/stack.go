@@ -32,45 +32,45 @@ func NewStackWithCapacity(capacity int) *Stack {
 	}
 }
 
-func (this *Stack) Push(value interface{}) error {
-	if this.IsFull() {
+func (s *Stack) Push(value interface{}) error {
+	if s.IsFull() {
 		return errors.New("Stack is full.")
 	}
 
-	this.dataStore.Prepend(value)
+	s.dataStore.Prepend(value)
 	return nil
 }
 
-func (this *Stack) Pop() (value interface{}, err error) {
-	if this.IsEmpty() {
+func (s *Stack) Pop() (value interface{}, err error) {
+	if s.IsEmpty() {
 		return nil, errors.New("Stack is empty.")
 	}
 
-	value, err = this.dataStore.Get(0)
-	this.dataStore.Delete(0)
+	value, err = s.dataStore.Get(0)
+	s.dataStore.Delete(0)
 	return
 }
 
-func (this *Stack) Peek() (interface{}, error) {
-	if this.IsEmpty() {
+func (s *Stack) Peek() (interface{}, error) {
+	if s.IsEmpty() {
 		return nil, errors.New("Stack is empty.")
 	}
 
-	return this.dataStore.Get(0)
+	return s.dataStore.Get(0)
 }
 
-func (this *Stack) IsEmpty() bool {
-	return this.dataStore.IsEmpty()
+func (s *Stack) IsEmpty() bool {
+	return s.dataStore.IsEmpty()
 }
 
-func (this *Stack) IsFull() bool {
-	return this.dataStore.Size() == this.capacity
+func (s *Stack) IsFull() bool {
+	return s.dataStore.Size() == s.capacity
 }
 
-func (this *Stack) Clear() {
-	this.dataStore.Clear()
+func (s *Stack) Clear() {
+	s.dataStore.Clear()
 }
 
-func (this *Stack) Size() int {
-	return this.dataStore.Size()
+func (s *Stack) Size() int {
+	return s.dataStore.Size()
 }

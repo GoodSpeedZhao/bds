@@ -14,16 +14,16 @@ func TestNewStack(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewStack()
-			if this == nil {
+			got := NewStack()
+			if got == nil {
 				t.Errorf("got nil, want Stack")
 				return
 			}
-			if this.dataStore == nil {
+			if got.dataStore == nil {
 				t.Errorf("got nil, want Stack dataStore")
 			}
-			if this.capacity != math.MaxUint32 {
-				t.Errorf("got %v, want %v", this.capacity, math.MaxUint32)
+			if got.capacity != math.MaxUint32 {
+				t.Errorf("got %v, want %v", got.capacity, math.MaxUint32)
 			}
 		})
 	}
@@ -44,16 +44,16 @@ func TestNewStackWithCapacity(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewStackWithCapacity(tt.args.capacity)
-			if this == nil {
+			got := NewStackWithCapacity(tt.args.capacity)
+			if got == nil {
 				t.Errorf("got nil, want Stack")
 				return
 			}
-			if this.dataStore == nil {
+			if got.dataStore == nil {
 				t.Errorf("got nil, want Stack dataStore")
 			}
-			if this.capacity != tt.want {
-				t.Errorf("got %v, want %v", this.capacity, tt.want)
+			if got.capacity != tt.want {
+				t.Errorf("got %v, want %v", got.capacity, tt.want)
 			}
 		})
 	}
@@ -77,17 +77,17 @@ func TestStack_Push(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewStackWithCapacity(tt.capacity)
-			if err := this.Push(tt.args.value); (err != nil) == tt.wantErr {
+			got := NewStackWithCapacity(tt.capacity)
+			if err := got.Push(tt.args.value); (err != nil) == tt.wantErr {
 				t.Errorf("Stack.Push() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			got, err := this.Peek()
+			element, err := got.Peek()
 			if (err != nil) == tt.wantErr1 {
 				t.Errorf("Stack.Peek() error = %v, wantErr %v", err, tt.wantErr1)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want1) {
-				t.Errorf("Stack.Peek() = %v, want %v", got, tt.want1)
+			if !reflect.DeepEqual(element, tt.want1) {
+				t.Errorf("Stack.Peek() = %v, want %v", element, tt.want1)
 			}
 		})
 	}
@@ -111,20 +111,20 @@ func TestStack_Pop(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewStackWithCapacity(tt.capacity)
+			got := NewStackWithCapacity(tt.capacity)
 			for i := 0; i < len(tt.push); i++ {
-				this.Push(tt.push[i])
+				got.Push(tt.push[i])
 			}
 			for i := 0; i < tt.pop; i++ {
-				this.Pop()
+				got.Pop()
 			}
-			gotValue, err := this.Pop()
+			element, err := got.Pop()
 			if (err != nil) == tt.wantErr {
 				t.Errorf("Stack.Pop() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(gotValue, tt.wantValue) {
-				t.Errorf("Stack.Pop() = %v, want %v", gotValue, tt.wantValue)
+			if !reflect.DeepEqual(element, tt.wantValue) {
+				t.Errorf("Stack.Pop() = %v, want %v", element, tt.wantValue)
 			}
 		})
 	}
@@ -148,20 +148,20 @@ func TestStack_Peek(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewStackWithCapacity(tt.capacity)
+			got := NewStackWithCapacity(tt.capacity)
 			for i := 0; i < len(tt.push); i++ {
-				this.Push(tt.push[i])
+				got.Push(tt.push[i])
 			}
 			for i := 0; i < tt.pop; i++ {
-				this.Pop()
+				got.Pop()
 			}
-			got, err := this.Peek()
+			element, err := got.Peek()
 			if (err != nil) == tt.wantErr {
 				t.Errorf("Stack.Peek() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Stack.Peek() = %v, want %v", got, tt.want)
+			if !reflect.DeepEqual(element, tt.want) {
+				t.Errorf("Stack.Peek() = %v, want %v", element, tt.want)
 			}
 		})
 	}
@@ -183,15 +183,15 @@ func TestStack_IsEmpty(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewStackWithCapacity(tt.capacity)
+			got := NewStackWithCapacity(tt.capacity)
 			for i := 0; i < len(tt.push); i++ {
-				this.Push(tt.push[i])
+				got.Push(tt.push[i])
 			}
 			for i := 0; i < tt.pop; i++ {
-				this.Pop()
+				got.Pop()
 			}
-			if got := this.IsEmpty(); got != tt.want {
-				t.Errorf("Stack.IsEmpty() = %v, want %v", got, tt.want)
+			if isEmpty := got.IsEmpty(); isEmpty != tt.want {
+				t.Errorf("Stack.IsEmpty() = %v, want %v", isEmpty, tt.want)
 			}
 		})
 	}
@@ -213,15 +213,15 @@ func TestStack_IsFull(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewStackWithCapacity(tt.capacity)
+			got := NewStackWithCapacity(tt.capacity)
 			for i := 0; i < len(tt.push); i++ {
-				this.Push(tt.push[i])
+				got.Push(tt.push[i])
 			}
 			for i := 0; i < tt.pop; i++ {
-				this.Pop()
+				got.Pop()
 			}
-			if got := this.IsFull(); got != tt.want {
-				t.Errorf("Stack.IsFull() = %v, want %v", got, tt.want)
+			if isFull := got.IsFull(); isFull != tt.want {
+				t.Errorf("Stack.IsFull() = %v, want %v", isFull, tt.want)
 			}
 		})
 	}
@@ -243,16 +243,16 @@ func TestStack_Clear(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewStackWithCapacity(tt.capacity)
+			got := NewStackWithCapacity(tt.capacity)
 			for i := 0; i < len(tt.push); i++ {
-				this.Push(tt.push[i])
+				got.Push(tt.push[i])
 			}
 			for i := 0; i < tt.pop; i++ {
-				this.Pop()
+				got.Pop()
 			}
-			this.Clear()
-			if got := this.Size(); got != tt.want {
-				t.Errorf("Stack.Size() = %v, want %v", got, tt.want)
+			got.Clear()
+			if size := got.Size(); size != tt.want {
+				t.Errorf("Stack.Size() = %v, want %v", size, tt.want)
 			}
 		})
 	}
@@ -275,15 +275,15 @@ func TestStack_Size(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewStackWithCapacity(tt.capacity)
+			got := NewStackWithCapacity(tt.capacity)
 			for i := 0; i < len(tt.push); i++ {
-				this.Push(tt.push[i])
+				got.Push(tt.push[i])
 			}
 			for i := 0; i < tt.pop; i++ {
-				this.Pop()
+				got.Pop()
 			}
-			if got := this.Size(); got != tt.want {
-				t.Errorf("Stack.Size() = %v, want %v", got, tt.want)
+			if size := got.Size(); size != tt.want {
+				t.Errorf("Stack.Size() = %v, want %v", size, tt.want)
 			}
 		})
 	}

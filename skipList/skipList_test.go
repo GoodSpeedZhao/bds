@@ -98,20 +98,20 @@ func TestSkipList_Search(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewSkipList()
+			got := NewSkipList()
 			for i := 0; i < len(tt.add); i++ {
-				this.Add(tt.add[i].newKey, tt.add[i].newVal)
+				got.Add(tt.add[i].newKey, tt.add[i].newVal)
 			}
 			for i := 0; i < len(tt.erase); i++ {
-				this.Erase(tt.erase[i])
+				got.Erase(tt.erase[i])
 			}
-			got, err := this.Search(tt.key)
+			element, err := got.Search(tt.key)
 			if (err != nil) == tt.wantErr {
 				t.Errorf("SkipList.Search() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if (got != nil) && !reflect.DeepEqual(got.value, tt.want) {
-				t.Errorf("SkipList.Search() = %v, want %v", got.value, tt.want)
+			if (got != nil) && !reflect.DeepEqual(element.value, tt.want) {
+				t.Errorf("SkipList.Search() = %v, want %v", element.value, tt.want)
 			}
 		})
 	}
@@ -174,18 +174,18 @@ func TestSkipList_Add(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewSkipList()
+			got := NewSkipList()
 			for i := 0; i < len(tt.args); i++ {
-				this.Add(tt.args[i].key, tt.args[i].newVal)
+				got.Add(tt.args[i].key, tt.args[i].newVal)
 			}
 			for i := 0; i < len(tt.erase); i++ {
-				this.Erase(tt.erase[i])
+				got.Erase(tt.erase[i])
 			}
 			for i := 0; i < len(tt.add); i++ {
-				this.Add(tt.add[i].key, tt.add[i].newVal)
+				got.Add(tt.add[i].key, tt.add[i].newVal)
 			}
-			if !reflect.DeepEqual(this.size, tt.want) {
-				t.Errorf("SkipList.Add() = %v, want %v", this.size, tt.want)
+			if !reflect.DeepEqual(got.size, tt.want) {
+				t.Errorf("SkipList.Add() = %v, want %v", got.size, tt.want)
 			}
 		})
 	}
@@ -212,12 +212,12 @@ func TestSkipList_Erase(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewSkipList()
+			got := NewSkipList()
 			for i := 0; i < len(tt.add); i++ {
-				this.Add(tt.add[i].newKey, tt.add[i].newVal)
+				got.Add(tt.add[i].newKey, tt.add[i].newVal)
 			}
 			for i := 0; i < len(tt.erase); i++ {
-				if gotResult := this.Erase(tt.erase[i]); gotResult != tt.wantResult[i] {
+				if gotResult := got.Erase(tt.erase[i]); gotResult != tt.wantResult[i] {
 					t.Errorf("SkipList.Erase() = %v, want %v", gotResult, tt.wantResult[i])
 				}
 			}
@@ -248,20 +248,20 @@ func TestSkipList_Get(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewSkipList()
+			got := NewSkipList()
 			for i := 0; i < len(tt.add); i++ {
-				this.Add(tt.add[i].newKey, tt.add[i].newVal)
+				got.Add(tt.add[i].newKey, tt.add[i].newVal)
 			}
 			for i := 0; i < len(tt.erase); i++ {
-				this.Erase(tt.erase[i])
+				got.Erase(tt.erase[i])
 			}
-			got, err := this.Get(tt.getKey)
+			element, err := got.Get(tt.getKey)
 			if (err != nil) == tt.wantErr {
 				t.Errorf("SkipList.Get() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if (got != nil) && !reflect.DeepEqual(got.value, tt.want) {
-				t.Errorf("SkipList.Get() = %v, want %v", got.value, tt.want)
+			if (element != nil) && !reflect.DeepEqual(element.value, tt.want) {
+				t.Errorf("SkipList.Get() = %v, want %v", element.value, tt.want)
 			}
 		})
 	}
@@ -287,15 +287,15 @@ func TestSkipList_GetSize(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewSkipList()
+			got := NewSkipList()
 			for i := 0; i < len(tt.add); i++ {
-				this.Add(tt.add[i].newKey, tt.add[i].newVal)
+				got.Add(tt.add[i].newKey, tt.add[i].newVal)
 			}
 			for i := 0; i < len(tt.erase); i++ {
-				this.Erase(tt.erase[i])
+				got.Erase(tt.erase[i])
 			}
-			if got := this.GetSize(); got != tt.want {
-				t.Errorf("SkipList.GetSize() = %v, want %v", got, tt.want)
+			if size := got.GetSize(); size != tt.want {
+				t.Errorf("SkipList.GetSize() = %v, want %v", size, tt.want)
 			}
 		})
 	}

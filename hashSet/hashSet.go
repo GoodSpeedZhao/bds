@@ -15,53 +15,53 @@ func NewHashSet(newVal ...interface{}) *Set {
 	return set
 }
 
-func (this *Set) Add(newVal ...interface{}) {
+func (s *Set) Add(newVal ...interface{}) {
 	for _, val := range newVal {
-		this.dataStore[val] = struct{}{}
+		s.dataStore[val] = struct{}{}
 	}
 }
 
-func (this *Set) Delete(values ...interface{}) {
+func (s *Set) Delete(values ...interface{}) {
 	for _, val := range values {
-		delete(this.dataStore, val)
+		delete(s.dataStore, val)
 	}
 }
 
-func (this *Set) Size() int {
-	return len(this.dataStore)
+func (s *Set) Size() int {
+	return len(s.dataStore)
 }
 
-func (this *Set) Clear() {
-	this.dataStore = make(map[interface{}]struct{})
+func (s *Set) Clear() {
+	s.dataStore = make(map[interface{}]struct{})
 }
 
-func (this *Set) IsEmpty() bool {
-	return len(this.dataStore) == 0
+func (s *Set) IsEmpty() bool {
+	return len(s.dataStore) == 0
 }
 
-func (this *Set) Contains(values ...interface{}) bool {
+func (s *Set) Contains(values ...interface{}) bool {
 	for _, val := range values {
-		if _, ok := this.dataStore[val]; !ok {
+		if _, ok := s.dataStore[val]; !ok {
 			return false
 		}
 	}
 	return true
 }
 
-func (this *Set) Intersection(other *Set) *Set {
-	if this.IsEmpty() || other.IsEmpty() {
+func (s *Set) Intersection(other *Set) *Set {
+	if s.IsEmpty() || other.IsEmpty() {
 		return nil
 	}
 
 	newHashSet := NewHashSet()
-	if this.Size() > other.Size() {
+	if s.Size() > other.Size() {
 		for key := range other.dataStore {
-			if _, ok := this.dataStore[key]; ok {
+			if _, ok := s.dataStore[key]; ok {
 				newHashSet.Add(key)
 			}
 		}
 	} else {
-		for key := range this.dataStore {
+		for key := range s.dataStore {
 			if _, ok := other.dataStore[key]; ok {
 				newHashSet.Add(key)
 			}
@@ -70,9 +70,9 @@ func (this *Set) Intersection(other *Set) *Set {
 	return newHashSet
 }
 
-func (this *Set) Union(other *Set) *Set {
+func (s *Set) Union(other *Set) *Set {
 	newHashSet := NewHashSet()
-	for key := range this.dataStore {
+	for key := range s.dataStore {
 		newHashSet.Add(key)
 	}
 	for key := range other.dataStore {
@@ -81,9 +81,9 @@ func (this *Set) Union(other *Set) *Set {
 	return newHashSet
 }
 
-func (this *Set) Diff(other *Set) *Set {
+func (s *Set) Diff(other *Set) *Set {
 	newHashSet := NewHashSet()
-	for key := range this.dataStore {
+	for key := range s.dataStore {
 		if _, ok := other.dataStore[key]; !ok {
 			newHashSet.Add(key)
 		}

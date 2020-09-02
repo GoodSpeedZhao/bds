@@ -17,12 +17,12 @@ func TestNewHashSet(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.args.newVal...)
-			if this == nil {
+			got := NewHashSet(tt.args.newVal...)
+			if got == nil {
 				t.Errorf("got nil, want HashSet")
 				return
 			}
-			if this.dataStore == nil {
+			if got.dataStore == nil {
 				t.Errorf("got nil, want HashSet dataStore")
 			}
 		})
@@ -45,10 +45,10 @@ func TestSet_Add(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.args.newVal...)
-			this.Add(tt.args.newVal...)
-			if got := this.Size(); got != tt.want {
-				t.Errorf("got = %v, want = %v", got, tt.want)
+			got := NewHashSet(tt.args.newVal...)
+			got.Add(tt.args.newVal...)
+			if size := got.Size(); size != tt.want {
+				t.Errorf("size = %v, want = %v", size, tt.want)
 			}
 		})
 	}
@@ -76,11 +76,11 @@ func TestSet_Delete(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.newVal...)
-			this.Add(tt.add...)
-			this.Delete(tt.args.values...)
-			if got := this.Size(); got != tt.want {
-				t.Errorf("got = %v, want = %v", got, tt.want)
+			got := NewHashSet(tt.newVal...)
+			got.Add(tt.add...)
+			got.Delete(tt.args.values...)
+			if size := got.Size(); size != tt.want {
+				t.Errorf("size = %v, want = %v", size, tt.want)
 			}
 		})
 	}
@@ -105,11 +105,11 @@ func TestSet_Size(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.newVal...)
-			this.Add(tt.add...)
-			this.Delete(tt.del...)
-			if got := this.Size(); got != tt.want {
-				t.Errorf("Set.Size() = %v, want %v", got, tt.want)
+			got := NewHashSet(tt.newVal...)
+			got.Add(tt.add...)
+			got.Delete(tt.del...)
+			if size := got.Size(); size != tt.want {
+				t.Errorf("Set.Size() = %v, want %v", size, tt.want)
 			}
 		})
 	}
@@ -130,12 +130,12 @@ func TestSet_Clear(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.newVal...)
-			this.Add(tt.add...)
-			this.Delete(tt.del...)
-			this.Clear()
-			if got := this.Size(); got != 0 {
-				t.Errorf("Set.Size() = %v, want %v", got, 0)
+			got := NewHashSet(tt.newVal...)
+			got.Add(tt.add...)
+			got.Delete(tt.del...)
+			got.Clear()
+			if size := got.Size(); size != 0 {
+				t.Errorf("Set.Size() = %v, want %v", size, 0)
 			}
 		})
 	}
@@ -157,11 +157,11 @@ func TestSet_IsEmpty(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.newVal...)
-			this.Add(tt.add...)
-			this.Delete(tt.del...)
-			if got := this.IsEmpty(); got != tt.want {
-				t.Errorf("Set.IsEmpty() = %v, want %v", got, tt.want)
+			got := NewHashSet(tt.newVal...)
+			got.Add(tt.add...)
+			got.Delete(tt.del...)
+			if isEmpty := got.IsEmpty(); isEmpty != tt.want {
+				t.Errorf("Set.IsEmpty() = %v, want %v", isEmpty, tt.want)
 			}
 		})
 	}
@@ -188,11 +188,11 @@ func TestSet_Contains(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.newVal...)
-			this.Add(tt.add...)
-			this.Delete(tt.del...)
-			if got := this.Contains(tt.args.values...); got != tt.want {
-				t.Errorf("Set.Contains() = %v, want %v", got, tt.want)
+			got := NewHashSet(tt.newVal...)
+			got.Add(tt.add...)
+			got.Delete(tt.del...)
+			if isContain := got.Contains(tt.args.values...); isContain != tt.want {
+				t.Errorf("Set.Contains() = %v, want %v", isContain, tt.want)
 			}
 		})
 	}
@@ -250,9 +250,9 @@ func TestSet_Intersection(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.curSet...)
+			self := NewHashSet(tt.curSet...)
 			other := NewHashSet(tt.otherSet...)
-			got := this.Intersection(other)
+			got := self.Intersection(other)
 			if tt.newSet == nil {
 				if got != nil {
 					t.Errorf("got nil, want nil")
@@ -321,9 +321,9 @@ func TestSet_Union(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.curSet...)
+			self := NewHashSet(tt.curSet...)
 			other := NewHashSet(tt.otherSet...)
-			got := this.Union(other)
+			got := self.Union(other)
 			if got == nil {
 				t.Errorf("got nil, want HashSet")
 				return
@@ -392,9 +392,9 @@ func TestSet_Diff(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashSet(tt.curSet...)
+			self := NewHashSet(tt.curSet...)
 			other := NewHashSet(tt.otherSet...)
-			got := this.Diff(other)
+			got := self.Diff(other)
 			if got == nil {
 				t.Errorf("got nil, want nil")
 				return

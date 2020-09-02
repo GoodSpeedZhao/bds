@@ -15,12 +15,12 @@ func TestNewHashMap(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashMap()
-			if this == nil {
+			got := NewHashMap()
+			if got == nil {
 				t.Errorf("got nil, want HashMap")
 				return
 			}
-			if this.dataStore == nil {
+			if got.dataStore == nil {
 				t.Errorf("got nil, want HashMap dataStore")
 			}
 		})
@@ -42,11 +42,11 @@ func TestMap_Put(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashMap()
+			got := NewHashMap()
 			for i := 0; i < len(tt.keys); i++ {
-				this.Put(tt.keys[i], tt.values[i])
+				got.Put(tt.keys[i], tt.values[i])
 			}
-			if size := this.Size(); size != tt.size {
+			if size := got.Size(); size != tt.size {
 				t.Errorf("HashMap.Size() = %v, want %v", size, tt.size)
 			}
 		})
@@ -73,17 +73,17 @@ func TestMap_Get(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashMap()
+			got := NewHashMap()
 			for i := 0; i < len(tt.putKeys); i++ {
-				this.Put(tt.putKeys[i], tt.putValues[i])
+				got.Put(tt.putKeys[i], tt.putValues[i])
 			}
-			gotVal, gotOk := this.Get(tt.args.key)
-			if gotOk != tt.wantOk {
-				t.Errorf("HashMap.Get() gotOk = %v, want %v", gotOk, tt.wantOk)
+			val, ok := got.Get(tt.args.key)
+			if ok != tt.wantOk {
+				t.Errorf("HashMap.Get() gotOk = %v, want %v", ok, tt.wantOk)
 				return
 			}
-			if !reflect.DeepEqual(gotVal, tt.wantVal) {
-				t.Errorf("HashMap.Get() gotVal = %v, want %v", gotVal, tt.wantVal)
+			if !reflect.DeepEqual(val, tt.wantVal) {
+				t.Errorf("HashMap.Get() val = %v, want %v", val, tt.wantVal)
 			}
 		})
 	}
@@ -113,22 +113,22 @@ func TestMap_Delete(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashMap()
+			got := NewHashMap()
 			for i := 0; i < len(tt.putKeys); i++ {
-				this.Put(tt.putKeys[i], tt.putValues[i])
+				got.Put(tt.putKeys[i], tt.putValues[i])
 			}
-			this.Delete(tt.args.key)
-			if size := this.Size(); size != tt.size {
+			got.Delete(tt.args.key)
+			if size := got.Size(); size != tt.size {
 				t.Errorf("HashMap.Size() = %v, want %v", size, tt.size)
 			}
 			if tt.get != nil {
-				gotVal, gotOk := this.Get(tt.get)
-				if gotOk != tt.wantOk {
-					t.Errorf("HashMap.Get() gotOk = %v, want %v", gotOk, tt.wantOk)
+				val, ok := got.Get(tt.get)
+				if ok != tt.wantOk {
+					t.Errorf("HashMap.Get() ok = %v, want %v", ok, tt.wantOk)
 					return
 				}
-				if !reflect.DeepEqual(gotVal, tt.wantVal) {
-					t.Errorf("HashMap.Get() gotVal = %v, want %v", gotVal, tt.wantVal)
+				if !reflect.DeepEqual(val, tt.wantVal) {
+					t.Errorf("HashMap.Get() val = %v, want %v", val, tt.wantVal)
 				}
 			}
 		})
@@ -154,15 +154,15 @@ func TestMap_Size(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashMap()
+			got := NewHashMap()
 			for i := 0; i < len(tt.putKeys); i++ {
-				this.Put(tt.putKeys[i], tt.putValues[i])
+				got.Put(tt.putKeys[i], tt.putValues[i])
 			}
 			for i := 0; i < len(tt.del); i++ {
-				this.Delete(tt.del[i])
+				got.Delete(tt.del[i])
 			}
-			if got := this.Size(); got != tt.want {
-				t.Errorf("HashMap.Size() = %v, want %v", got, tt.want)
+			if size := got.Size(); size != tt.want {
+				t.Errorf("HashMap.Size() = %v, want %v", size, tt.want)
 			}
 		})
 	}
@@ -184,15 +184,15 @@ func TestMap_IsEmpty(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashMap()
+			got := NewHashMap()
 			for i := 0; i < len(tt.putKeys); i++ {
-				this.Put(tt.putKeys[i], tt.putValues[i])
+				got.Put(tt.putKeys[i], tt.putValues[i])
 			}
 			for i := 0; i < len(tt.del); i++ {
-				this.Delete(tt.del[i])
+				got.Delete(tt.del[i])
 			}
-			if got := this.IsEmpty(); got != tt.want {
-				t.Errorf("HashMap.IsEmpty() = %v, want %v", got, tt.want)
+			if isEmpty := got.IsEmpty(); isEmpty != tt.want {
+				t.Errorf("HashMap.IsEmpty() = %v, want %v", isEmpty, tt.want)
 			}
 		})
 	}
@@ -216,18 +216,18 @@ func TestMap_Keys(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashMap()
+			got := NewHashMap()
 			for i := 0; i < len(tt.putKeys); i++ {
-				this.Put(tt.putKeys[i], tt.putValues[i])
+				got.Put(tt.putKeys[i], tt.putValues[i])
 			}
 			for i := 0; i < len(tt.del); i++ {
-				this.Delete(tt.del[i])
+				got.Delete(tt.del[i])
 			}
-			got := this.Keys()
-			if len(got) != tt.size {
-				t.Errorf("HashMap.Size() = %v, want %v", got, tt.want)
+			keys := got.Keys()
+			if len(keys) != tt.size {
+				t.Errorf("HashMap.Size() = %v, want %v", keys, tt.want)
 			}
-			for _, val := range got {
+			for _, val := range keys {
 				found := false
 				for _, inner := range tt.want {
 					if inner == val {
@@ -261,18 +261,18 @@ func TestMap_Values(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashMap()
+			got := NewHashMap()
 			for i := 0; i < len(tt.putKeys); i++ {
-				this.Put(tt.putKeys[i], tt.putValues[i])
+				got.Put(tt.putKeys[i], tt.putValues[i])
 			}
 			for i := 0; i < len(tt.del); i++ {
-				this.Delete(tt.del[i])
+				got.Delete(tt.del[i])
 			}
-			got := this.Values()
-			if len(got) != tt.size {
-				t.Errorf("HashMap.Size() = %v, want %v", got, tt.want)
+			values := got.Values()
+			if len(values) != tt.size {
+				t.Errorf("HashMap.Size() = %v, want %v", values, tt.want)
 			}
-			for _, val := range got {
+			for _, val := range values {
 				found := false
 				for _, inner := range tt.want {
 					if inner == val {
@@ -306,16 +306,16 @@ func TestMap_Clear(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			this := NewHashMap()
+			got := NewHashMap()
 			for i := 0; i < len(tt.putKeys); i++ {
-				this.Put(tt.putKeys[i], tt.putValues[i])
+				got.Put(tt.putKeys[i], tt.putValues[i])
 			}
 			for i := 0; i < len(tt.del); i++ {
-				this.Delete(tt.del[i])
+				got.Delete(tt.del[i])
 			}
-			this.Clear()
-			if got := this.Size(); got != tt.want {
-				t.Errorf("HashMap.Size() = %v, want %v", got, tt.want)
+			got.Clear()
+			if size := got.Size(); size != tt.want {
+				t.Errorf("HashMap.Size() = %v, want %v", size, tt.want)
 			}
 		})
 	}

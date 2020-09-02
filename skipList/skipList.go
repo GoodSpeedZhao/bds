@@ -53,9 +53,9 @@ func NewSkipList() *SkipList {
 	return s
 }
 
-func (this *SkipList) Search(key int) (*Node, error) {
-	cur := this.head
-	for i := this.level - 1; i >= 0; i-- {
+func (s *SkipList) Search(key int) (*Node, error) {
+	cur := s.head
+	for i := s.level - 1; i >= 0; i-- {
 		for cur.next[i].key < key {
 			cur = cur.next[i]
 		}
@@ -67,10 +67,10 @@ func (this *SkipList) Search(key int) (*Node, error) {
 	return nil, errors.New("Not Found.")
 }
 
-func (this *SkipList) Add(key int, newVal interface{}) {
+func (s *SkipList) Add(key int, newVal interface{}) {
 	pre := make([]*Node, MAXLEVEL)
-	cur := this.head
-	for i := this.level - 1; i >= 0; i-- {
+	cur := s.head
+	for i := s.level - 1; i >= 0; i-- {
 		for cur.next[i].key < key {
 			cur = cur.next[i]
 		}
@@ -82,23 +82,23 @@ func (this *SkipList) Add(key int, newVal interface{}) {
 	newNode := NewNode(key, newVal)
 	for i := 0; i < level; i++ {
 		if pre[i] == nil {
-			pre[i] = this.head
+			pre[i] = s.head
 		}
 
 		pre[i].next[i], newNode.next[i] = newNode, pre[i].next[i]
 	}
 
-	if this.level < level {
-		this.level = level
+	if s.level < level {
+		s.level = level
 	}
 
-	this.size++
+	s.size++
 }
 
-func (this *SkipList) Erase(key int) (result bool) {
+func (s *SkipList) Erase(key int) (result bool) {
 	result = false
-	cur := this.head
-	for i := this.level - 1; i >= 0; i-- {
+	cur := s.head
+	for i := s.level - 1; i >= 0; i-- {
 		for cur.next[i].key < key {
 			cur = cur.next[i]
 		}
@@ -111,15 +111,15 @@ func (this *SkipList) Erase(key int) (result bool) {
 	}
 
 	if result {
-		this.size--
+		s.size--
 	}
 
 	return
 }
 
-func (this *SkipList) Get(key int) (*Node, error) {
-	cur := this.head
-	for i := this.level - 1; i >= 0; i-- {
+func (s *SkipList) Get(key int) (*Node, error) {
+	cur := s.head
+	for i := s.level - 1; i >= 0; i-- {
 		for cur.next[i].key < key {
 			cur = cur.next[i]
 		}
@@ -131,42 +131,14 @@ func (this *SkipList) Get(key int) (*Node, error) {
 	return nil, errors.New("Not Found.")
 }
 
-func (this *SkipList) Print() {
-	cur := this.head
+func (s *SkipList) Print() {
+	cur := s.head
 	for cur != nil {
 		fmt.Println(cur.value)
 		cur = cur.next[0]
 	}
 }
 
-func (this *SkipList) GetSize() int {
-	return this.size
+func (s *SkipList) GetSize() int {
+	return s.size
 }
-
-// func ZSkipListTest() {
-// 	s := NewSkipList()
-
-// 	s.Add(1, 1)
-// 	s.Add(3, 3)
-// 	s.Add(5, 5)
-// 	s.Add(6, 6)
-// 	s.Add(9, 9)
-// 	s.Erase(6)
-// 	s.Print()
-// 	s.Erase(9)
-// 	s.Print()
-// 	if val, err := s.Search(5); err != nil {
-// 		fmt.Println(err)
-// 	} else {
-// 		fmt.Println(val)
-// 	}
-
-// 	// s.Print()
-
-// 	// if val, err := s.Search(4); err != nil {
-// 	// 	fmt.Println(err)
-// 	// } else {
-// 	// 	fmt.Println(val)
-// 	// }
-// 	// s.Print()
-// }

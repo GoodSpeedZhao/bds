@@ -30,45 +30,45 @@ func NewNode(newVal interface{}, newNext *Node) *Node {
 	}
 }
 
-func (this *LinkList) Get(index int) (interface{}, error) {
-	if !this.withinRange(index) {
+func (linkList *LinkList) Get(index int) (interface{}, error) {
+	if !linkList.withinRange(index) {
 		return nil, errors.New("out of range.")
 	}
 
-	e := this.head
+	e := linkList.head
 	for i := 0; i < index; i, e = i+1, e.Next {
 	}
 	return e.Val, nil
 }
 
-func (this *LinkList) Set(index int, newVal interface{}) error {
-	if !this.withinRange(index) {
+func (linkList *LinkList) Set(index int, newVal interface{}) error {
+	if !linkList.withinRange(index) {
 		return errors.New("out of range.")
 	}
 
-	if index == this.size-1 {
-		this.tail.Val = newVal
+	if index == linkList.size-1 {
+		linkList.tail.Val = newVal
 		return nil
 	}
 
-	e := this.head
+	e := linkList.head
 	for i := 0; i < index; i, e = i+1, e.Next {
 	}
 	e.Val = newVal
 	return nil
 }
 
-func (this *LinkList) Insert(index int, newVal ...interface{}) error {
-	if !this.withinRange(index) {
+func (linkList *LinkList) Insert(index int, newVal ...interface{}) error {
+	if !linkList.withinRange(index) {
 		return errors.New("out of range.")
 	}
 
-	if index == this.size-1 {
-		this.Append(newVal...)
+	if index == linkList.size-1 {
+		linkList.Append(newVal...)
 		return nil
 	}
 
-	e := this.head
+	e := linkList.head
 	for i := 0; i < index; i, e = i+1, e.Next {
 	}
 
@@ -78,31 +78,31 @@ func (this *LinkList) Insert(index int, newVal ...interface{}) error {
 		e = tmp
 	}
 
-	this.size += len(newVal)
+	linkList.size += len(newVal)
 
 	return nil
 }
 
-func (this *LinkList) Delete(index int) error {
-	if !this.withinRange(index) {
+func (linkList *LinkList) Delete(index int) error {
+	if !linkList.withinRange(index) {
 		return errors.New("out of range.")
 	}
 
-	if this.size == 1 {
-		this.Clear()
+	if linkList.size == 1 {
+		linkList.Clear()
 		return nil
 	}
 
 	var preElement *Node
-	e := this.head
+	e := linkList.head
 	for i := 0; i < index; i, e = i+1, e.Next {
 		preElement = e
 	}
 
-	if e == this.head {
-		this.head = this.head.Next
-	} else if e == this.tail {
-		this.tail = preElement
+	if e == linkList.head {
+		linkList.head = linkList.head.Next
+	} else if e == linkList.tail {
+		linkList.tail = preElement
 	} else {
 		preElement.Next = e.Next
 	}
@@ -110,56 +110,56 @@ func (this *LinkList) Delete(index int) error {
 	e.Next = nil
 	e = nil
 
-	this.size--
+	linkList.size--
 
 	return nil
 }
 
-func (this *LinkList) Append(newVal ...interface{}) {
+func (linkList *LinkList) Append(newVal ...interface{}) {
 	for _, val := range newVal {
 		tmp := NewNode(val, nil)
-		if this.head == nil && this.tail == nil {
-			this.head = tmp
-			this.tail = tmp
+		if linkList.head == nil && linkList.tail == nil {
+			linkList.head = tmp
+			linkList.tail = tmp
 		} else {
-			this.tail.Next = tmp
-			this.tail = tmp
+			linkList.tail.Next = tmp
+			linkList.tail = tmp
 		}
 	}
 
-	this.size += len(newVal)
+	linkList.size += len(newVal)
 }
 
-func (this *LinkList) Prepend(newVal ...interface{}) {
+func (linkList *LinkList) Prepend(newVal ...interface{}) {
 	for _, val := range newVal {
-		tmp := NewNode(val, this.head)
+		tmp := NewNode(val, linkList.head)
 
-		this.head = tmp
-		if this.tail == nil {
-			this.tail = tmp
+		linkList.head = tmp
+		if linkList.tail == nil {
+			linkList.tail = tmp
 		}
 	}
-	this.size += len(newVal)
+	linkList.size += len(newVal)
 }
 
-func (this *LinkList) Clear() {
-	this.head = nil
-	this.tail = nil
-	this.size = 0
+func (linkList *LinkList) Clear() {
+	linkList.head = nil
+	linkList.tail = nil
+	linkList.size = 0
 }
 
-func (this *LinkList) Contains(values ...interface{}) bool {
+func (linkList *LinkList) Contains(values ...interface{}) bool {
 	if len(values) == 0 {
 		return true
 	}
 
-	if this.size == 0 {
+	if linkList.size == 0 {
 		return false
 	}
 
 	for _, val := range values {
 		var e *Node
-		for e = this.head; e != nil; e = e.Next {
+		for e = linkList.head; e != nil; e = e.Next {
 			if val == e.Val {
 				break
 			}
@@ -172,17 +172,17 @@ func (this *LinkList) Contains(values ...interface{}) bool {
 	return true
 }
 
-func (this *LinkList) Swap(i, j int) error {
+func (linkList *LinkList) Swap(i, j int) error {
 	if i == j {
 		return nil
 	}
 
-	if !this.withinRange(i) || !this.withinRange(j) {
+	if !linkList.withinRange(i) || !linkList.withinRange(j) {
 		return errors.New("out of range.")
 	}
 
 	var elementI, elementJ *Node
-	for count, e := 0, this.head; elementI == nil || elementJ == nil; count, e = count+1, e.Next {
+	for count, e := 0, linkList.head; elementI == nil || elementJ == nil; count, e = count+1, e.Next {
 		switch count {
 		case i:
 			elementI = e
@@ -194,22 +194,22 @@ func (this *LinkList) Swap(i, j int) error {
 	return nil
 }
 
-func (this *LinkList) IsEmpty() bool {
-	return this.size == 0
+func (linkList *LinkList) IsEmpty() bool {
+	return linkList.size == 0
 }
 
-func (this *LinkList) Size() int {
-	return this.size
+func (linkList *LinkList) Size() int {
+	return linkList.size
 }
 
-func (this *LinkList) withinRange(index int) bool {
-	return index >= 0 && index < this.size
+func (linkList *LinkList) withinRange(index int) bool {
+	return index >= 0 && index < linkList.size
 }
 
-func (this *LinkList) HeadNode() *Node {
-	return this.head
+func (linkList *LinkList) HeadNode() *Node {
+	return linkList.head
 }
 
-func (this *LinkList) TailNode() *Node {
-	return this.tail
+func (linkList *LinkList) TailNode() *Node {
+	return linkList.tail
 }
