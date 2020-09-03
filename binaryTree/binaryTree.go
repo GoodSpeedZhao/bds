@@ -43,7 +43,7 @@ func CreateWithLevelOrder(newVal []interface{}) *BinaryTree {
 			for i := 0; i < levelCount; i++ {
 				tmp, err := que.Shift()
 				if err != nil {
-					panic(err)
+					continue
 				}
 
 				if curIdx < len(newVal) {
@@ -141,7 +141,7 @@ func (bt *BinaryTree) LevelOrder() interface{} {
 	queue.Append(bt.root)
 	for !queue.IsEmpty() {
 		if node, err := queue.Shift(); err != nil {
-			return nil
+			continue
 		} else {
 			popNode := node.(*Node)
 			values = append(values, popNode.value)

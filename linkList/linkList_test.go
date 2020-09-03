@@ -362,6 +362,7 @@ func TestLinkList_Contains(t *testing.T) {
 		{"TestLinkList_Contains case5", []interface{}{3, 6, 9}, []int{}, args{[]interface{}{9}}, true},
 		{"TestLinkList_Contains case6", []interface{}{3, 6, 9}, []int{}, args{[]interface{}{3, 6, 9}}, true},
 		{"TestLinkList_Contains case7", []interface{}{3, 6, 9}, []int{0}, args{[]interface{}{3}}, false},
+		{"TestLinkList_Contains case8", []interface{}{}, []int{}, args{[]interface{}{}}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

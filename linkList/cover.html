@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/GoodSpeedZhao/bds/linkList/linkList.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package linkList
+
+import (
+        "errors"
+)
+
+type LinkList struct {
+        head *Node
+        tail *Node
+        size int
+}
+
+type Node struct {
+        Val  interface{}
+        Next *Node
+}
+
+func NewLinkList() *LinkList <span class="cov8" title="1">{
+        return &amp;LinkList{
+                head: nil,
+                tail: nil,
+                size: 0,
+        }
+}</span>
+
+func NewNode(newVal interface{}, newNext *Node) *Node <span class="cov8" title="1">{
+        return &amp;Node{
+                Val:  newVal,
+                Next: newNext,
+        }
+}</span>
+
+func (linkList *LinkList) Get(index int) (interface{}, error) <span class="cov8" title="1">{
+        if !linkList.withinRange(index) </span><span class="cov8" title="1">{
+                return nil, errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">e := linkList.head
+        for i := 0; i &lt; index; i, e = i+1, e.Next </span>{<span class="cov8" title="1">
+        }</span>
+        <span class="cov8" title="1">return e.Val, nil</span>
+}
+
+func (linkList *LinkList) Set(index int, newVal interface{}) error <span class="cov8" title="1">{
+        if !linkList.withinRange(index) </span><span class="cov8" title="1">{
+                return errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">if index == linkList.size-1 </span><span class="cov8" title="1">{
+                linkList.tail.Val = newVal
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">e := linkList.head
+        for i := 0; i &lt; index; i, e = i+1, e.Next </span>{<span class="cov0" title="0">
+        }</span>
+        <span class="cov8" title="1">e.Val = newVal
+        return nil</span>
+}
+
+func (linkList *LinkList) Insert(index int, newVal ...interface{}) error <span class="cov8" title="1">{
+        if !linkList.withinRange(index) </span><span class="cov8" title="1">{
+                return errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">if index == linkList.size-1 </span><span class="cov8" title="1">{
+                linkList.Append(newVal...)
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">e := linkList.head
+        for i := 0; i &lt; index; i, e = i+1, e.Next </span>{<span class="cov0" title="0">
+        }</span>
+
+        <span class="cov8" title="1">for _, val := range newVal </span><span class="cov8" title="1">{
+                tmp := NewNode(val, e.Next)
+                e.Next = tmp
+                e = tmp
+        }</span>
+
+        <span class="cov8" title="1">linkList.size += len(newVal)
+
+        return nil</span>
+}
+
+func (linkList *LinkList) Delete(index int) error <span class="cov8" title="1">{
+        if !linkList.withinRange(index) </span><span class="cov8" title="1">{
+                return errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">if linkList.size == 1 </span><span class="cov8" title="1">{
+                linkList.Clear()
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">var preElement *Node
+        e := linkList.head
+        for i := 0; i &lt; index; i, e = i+1, e.Next </span><span class="cov8" title="1">{
+                preElement = e
+        }</span>
+
+        <span class="cov8" title="1">if e == linkList.head </span><span class="cov8" title="1">{
+                linkList.head = linkList.head.Next
+        }</span> else<span class="cov8" title="1"> if e == linkList.tail </span><span class="cov8" title="1">{
+                linkList.tail = preElement
+        }</span> else<span class="cov8" title="1"> {
+                preElement.Next = e.Next
+        }</span>
+
+        <span class="cov8" title="1">e.Next = nil
+        e = nil
+
+        linkList.size--
+
+        return nil</span>
+}
+
+func (linkList *LinkList) Append(newVal ...interface{}) <span class="cov8" title="1">{
+        for _, val := range newVal </span><span class="cov8" title="1">{
+                tmp := NewNode(val, nil)
+                if linkList.head == nil &amp;&amp; linkList.tail == nil </span><span class="cov8" title="1">{
+                        linkList.head = tmp
+                        linkList.tail = tmp
+                }</span> else<span class="cov8" title="1"> {
+                        linkList.tail.Next = tmp
+                        linkList.tail = tmp
+                }</span>
+        }
+
+        <span class="cov8" title="1">linkList.size += len(newVal)</span>
+}
+
+func (linkList *LinkList) Prepend(newVal ...interface{}) <span class="cov8" title="1">{
+        for _, val := range newVal </span><span class="cov8" title="1">{
+                tmp := NewNode(val, linkList.head)
+
+                linkList.head = tmp
+                if linkList.tail == nil </span><span class="cov8" title="1">{
+                        linkList.tail = tmp
+                }</span>
+        }
+        <span class="cov8" title="1">linkList.size += len(newVal)</span>
+}
+
+func (linkList *LinkList) Clear() <span class="cov8" title="1">{
+        linkList.head = nil
+        linkList.tail = nil
+        linkList.size = 0
+}</span>
+
+func (linkList *LinkList) Contains(values ...interface{}) bool <span class="cov8" title="1">{
+        if len(values) == 0 </span><span class="cov8" title="1">{
+                return true
+        }</span>
+
+        <span class="cov8" title="1">if linkList.size == 0 </span><span class="cov8" title="1">{
+                return false
+        }</span>
+
+        <span class="cov8" title="1">for _, val := range values </span><span class="cov8" title="1">{
+                var e *Node
+                for e = linkList.head; e != nil; e = e.Next </span><span class="cov8" title="1">{
+                        if val == e.Val </span><span class="cov8" title="1">{
+                                break</span>
+                        }
+                }
+                <span class="cov8" title="1">if e == nil </span><span class="cov8" title="1">{
+                        return false
+                }</span>
+        }
+
+        <span class="cov8" title="1">return true</span>
+}
+
+func (linkList *LinkList) Swap(i, j int) error <span class="cov8" title="1">{
+        if i == j </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">if !linkList.withinRange(i) || !linkList.withinRange(j) </span><span class="cov8" title="1">{
+                return errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">var elementI, elementJ *Node
+        for count, e := 0, linkList.head; elementI == nil || elementJ == nil; count, e = count+1, e.Next </span><span class="cov8" title="1">{
+                switch count </span>{
+                case i:<span class="cov8" title="1">
+                        elementI = e</span>
+                case j:<span class="cov8" title="1">
+                        elementJ = e</span>
+                }
+        }
+        <span class="cov8" title="1">elementI.Val, elementJ.Val = elementJ.Val, elementI.Val
+        return nil</span>
+}
+
+func (linkList *LinkList) IsEmpty() bool <span class="cov8" title="1">{
+        return linkList.size == 0
+}</span>
+
+func (linkList *LinkList) Size() int <span class="cov8" title="1">{
+        return linkList.size
+}</span>
+
+func (linkList *LinkList) withinRange(index int) bool <span class="cov8" title="1">{
+        return index &gt;= 0 &amp;&amp; index &lt; linkList.size
+}</span>
+
+func (linkList *LinkList) HeadNode() *Node <span class="cov8" title="1">{
+        return linkList.head
+}</span>
+
+func (linkList *LinkList) TailNode() *Node <span class="cov8" title="1">{
+        return linkList.tail
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

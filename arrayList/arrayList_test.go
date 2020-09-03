@@ -313,6 +313,7 @@ func TestArrayList_Contains(t *testing.T) {
 		{"TestArrayList_Contains case5", []interface{}{3, 6, 9}, []int{}, args{[]interface{}{9}}, true},
 		{"TestArrayList_Contains case6", []interface{}{3, 6, 9}, []int{}, args{[]interface{}{3, 6, 9}}, true},
 		{"TestArrayList_Contains case7", []interface{}{3, 6, 9}, []int{0}, args{[]interface{}{3}}, false},
+		{"TestArrayList_Contains case8", []interface{}{}, []int{}, args{[]interface{}{}}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/GoodSpeedZhao/bds/binaryTree/binaryTree.go (97.7%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package binaryTree
+
+import "github.com/GoodSpeedZhao/bds/deque"
+
+type BinaryTree struct {
+        root *Node
+        size int
+}
+
+type Node struct {
+        value interface{}
+        left  *Node
+        right *Node
+}
+
+func NewBinaryTree() *BinaryTree <span class="cov8" title="1">{
+        return &amp;BinaryTree{
+                root: nil,
+                size: 0,
+        }
+}</span>
+
+func NewNode(newVal interface{}) *Node <span class="cov8" title="1">{
+        return &amp;Node{
+                value: newVal,
+                left:  nil,
+                right: nil,
+        }
+}</span>
+
+func CreateWithLevelOrder(newVal []interface{}) *BinaryTree <span class="cov8" title="1">{
+        tree := NewBinaryTree()
+
+        var root *Node
+        if len(newVal) &gt; 0 </span><span class="cov8" title="1">{
+                curIdx := 1
+                root = NewNode(newVal[0])
+                que := deque.NewDequeWithCapacity(len(newVal))
+                que.Append(root)
+                for !que.IsEmpty() </span><span class="cov8" title="1">{
+                        levelCount := que.Size()
+                        tree.size += levelCount
+                        for i := 0; i &lt; levelCount; i++ </span><span class="cov8" title="1">{
+                                tmp, err := que.Shift()
+                                if err != nil </span><span class="cov0" title="0">{
+                                        continue</span>
+                                }
+
+                                <span class="cov8" title="1">if curIdx &lt; len(newVal) </span><span class="cov8" title="1">{
+                                        if newVal[curIdx] != nil </span><span class="cov8" title="1">{
+                                                tmp.(*Node).left = NewNode(newVal[curIdx])
+                                                que.Append(tmp.(*Node).left)
+                                        }</span>
+                                }
+                                <span class="cov8" title="1">curIdx++
+
+                                if curIdx &lt; len(newVal) </span><span class="cov8" title="1">{
+                                        if newVal[curIdx] != nil </span><span class="cov8" title="1">{
+                                                tmp.(*Node).right = NewNode(newVal[curIdx])
+                                                que.Append(tmp.(*Node).right)
+                                        }</span>
+                                }
+                                <span class="cov8" title="1">curIdx++</span>
+                        }
+                }
+        }
+
+        <span class="cov8" title="1">tree.root = root
+
+        return tree</span>
+}
+
+func (bt *BinaryTree) PreOrder() interface{} <span class="cov8" title="1">{
+        if bt.IsEmpty() </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">values := make([]interface{}, 0, bt.size)
+        bt.preOrder(bt.root, &amp;values)
+        return values</span>
+}
+
+func (bt *BinaryTree) preOrder(root *Node, values *[]interface{}) <span class="cov8" title="1">{
+        if root == nil </span><span class="cov8" title="1">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">*values = append(*values, root.value)
+        bt.preOrder(root.left, values)
+        bt.preOrder(root.right, values)</span>
+}
+
+func (bt *BinaryTree) InOrder() interface{} <span class="cov8" title="1">{
+        if bt.IsEmpty() </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">values := make([]interface{}, 0, bt.size)
+        bt.inOrder(bt.root, &amp;values)
+        return values</span>
+}
+
+func (bt *BinaryTree) inOrder(root *Node, values *[]interface{}) <span class="cov8" title="1">{
+        if root == nil </span><span class="cov8" title="1">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">bt.inOrder(root.left, values)
+        *values = append(*values, root.value)
+        bt.inOrder(root.right, values)</span>
+}
+
+func (bt *BinaryTree) PostOrder() interface{} <span class="cov8" title="1">{
+        if bt.IsEmpty() </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">values := make([]interface{}, 0, bt.size)
+        bt.postOrder(bt.root, &amp;values)
+        return values</span>
+}
+
+func (bt *BinaryTree) postOrder(root *Node, values *[]interface{}) <span class="cov8" title="1">{
+        if root == nil </span><span class="cov8" title="1">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">bt.postOrder(root.left, values)
+        bt.postOrder(root.right, values)
+        *values = append(*values, root.value)</span>
+}
+
+func (bt *BinaryTree) LevelOrder() interface{} <span class="cov8" title="1">{
+        if bt.IsEmpty() </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">values := make([]interface{}, 0, bt.size)
+
+        queue := deque.NewDeque()
+        queue.Append(bt.root)
+        for !queue.IsEmpty() </span><span class="cov8" title="1">{
+                if node, err := queue.Shift(); err != nil </span><span class="cov0" title="0">{
+                        continue</span>
+                } else<span class="cov8" title="1"> {
+                        popNode := node.(*Node)
+                        values = append(values, popNode.value)
+                        if popNode.left != nil </span><span class="cov8" title="1">{
+                                queue.Append(popNode.left)
+                        }</span>
+                        <span class="cov8" title="1">if popNode.right != nil </span><span class="cov8" title="1">{
+                                queue.Append(popNode.right)
+                        }</span>
+                }
+        }
+
+        <span class="cov8" title="1">return values</span>
+}
+
+func (bt *BinaryTree) IsEmpty() bool <span class="cov8" title="1">{
+        return bt.size == 0
+}</span>
+
+func (bt *BinaryTree) Size() int <span class="cov8" title="1">{
+        return bt.size
+}</span>
+
+func (bt *BinaryTree) Root() *Node <span class="cov8" title="1">{
+        return bt.root
+}</span>
+
+func (bt *BinaryTree) Clear() <span class="cov8" title="1">{
+        if bt.IsEmpty() </span><span class="cov8" title="1">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">bt.clear(bt.root)
+        bt.root = nil
+        bt.size = 0</span>
+}
+
+func (bt *BinaryTree) clear(root *Node) <span class="cov8" title="1">{
+        if root == nil </span><span class="cov8" title="1">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">bt.clear(root.left)
+        bt.clear(root.right)
+        root.left = nil
+        root.right = nil</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

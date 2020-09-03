@@ -110,7 +110,7 @@ func TestSkipList_Search(t *testing.T) {
 				t.Errorf("SkipList.Search() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if (got != nil) && !reflect.DeepEqual(element.value, tt.want) {
+			if (element != nil) && !reflect.DeepEqual(element.value, tt.want) {
 				t.Errorf("SkipList.Search() = %v, want %v", element.value, tt.want)
 			}
 		})
