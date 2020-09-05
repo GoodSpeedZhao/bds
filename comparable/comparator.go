@@ -1,9 +1,10 @@
 package comparable
 
 import (
-	"softPack/ginPack/utils"
 	"strings"
 	"time"
+
+	"github.com/GoodSpeedZhao/bds/utils"
 )
 
 // Should return a number:
