@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/GoodSpeedZhao/bds/comparable/comparator.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package comparable
+
+import (
+        "strings"
+        "time"
+
+        "github.com/GoodSpeedZhao/bds/utils"
+)
+
+// Should return a number:
+//    -1 , if a &lt; b
+//     0 , if a == b
+//     1 , if a &gt; b
+type Comparator func(a, b interface{}) int
+
+func IntComparator(a, b interface{}) int <span class="cov8" title="1">{
+        aInt := a.(int)
+        bInt := b.(int)
+        switch </span>{
+        case aInt &gt; bInt:<span class="cov8" title="1">
+                return 1</span>
+        case aInt &lt; bInt:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func Int8Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aInt8 := a.(int8)
+        bInt8 := b.(int8)
+        switch </span>{
+        case aInt8 &gt; bInt8:<span class="cov8" title="1">
+                return 1</span>
+        case aInt8 &lt; bInt8:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func Int16Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aInt16 := a.(int16)
+        bInt16 := b.(int16)
+        switch </span>{
+        case aInt16 &gt; bInt16:<span class="cov8" title="1">
+                return 1</span>
+        case aInt16 &lt; bInt16:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func Int32Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aInt32 := a.(int32)
+        bInt32 := b.(int32)
+        switch </span>{
+        case aInt32 &gt; bInt32:<span class="cov8" title="1">
+                return 1</span>
+        case aInt32 &lt; bInt32:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func Int64Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aInt64 := a.(int64)
+        bInt64 := b.(int64)
+        switch </span>{
+        case aInt64 &gt; bInt64:<span class="cov8" title="1">
+                return 1</span>
+        case aInt64 &lt; bInt64:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func UintComparator(a, b interface{}) int <span class="cov8" title="1">{
+        aUint := a.(uint)
+        bUint := b.(uint)
+        switch </span>{
+        case aUint &gt; bUint:<span class="cov8" title="1">
+                return 1</span>
+        case aUint &lt; bUint:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func Uint8Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aUint8 := a.(uint8)
+        bUint8 := b.(uint8)
+        switch </span>{
+        case aUint8 &gt; bUint8:<span class="cov8" title="1">
+                return 1</span>
+        case aUint8 &lt; bUint8:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func Uint16Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aUint16 := a.(uint16)
+        bUint16 := b.(uint16)
+        switch </span>{
+        case aUint16 &gt; bUint16:<span class="cov8" title="1">
+                return 1</span>
+        case aUint16 &lt; bUint16:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func Uint32Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aUint32 := a.(uint32)
+        bUint32 := b.(uint32)
+        switch </span>{
+        case aUint32 &gt; bUint32:<span class="cov8" title="1">
+                return 1</span>
+        case aUint32 &lt; bUint32:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func Uint64Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aUint64 := a.(uint64)
+        bUint64 := b.(uint64)
+        switch </span>{
+        case aUint64 &gt; bUint64:<span class="cov8" title="1">
+                return 1</span>
+        case aUint64 &lt; bUint64:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func Float32Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aFloat32 := a.(float32)
+        bFloat32 := b.(float32)
+        if utils.IsFloat32Equal(aFloat32, bFloat32) </span><span class="cov8" title="1">{
+                return 0
+        }</span> else<span class="cov8" title="1"> if aFloat32 &gt; bFloat32 </span><span class="cov8" title="1">{
+                return 1
+        }</span> else<span class="cov8" title="1"> {
+                return -1
+        }</span>
+}
+
+func Float64Comparator(a, b interface{}) int <span class="cov8" title="1">{
+        aFloat64 := a.(float64)
+        bFloat64 := b.(float64)
+        if utils.IsFloat64Equal(aFloat64, bFloat64) </span><span class="cov8" title="1">{
+                return 0
+        }</span> else<span class="cov8" title="1"> if aFloat64 &gt; bFloat64 </span><span class="cov8" title="1">{
+                return 1
+        }</span> else<span class="cov8" title="1"> {
+                return -1
+        }</span>
+}
+
+func ByteComparator(a, b interface{}) int <span class="cov8" title="1">{
+        aByte := a.(byte)
+        bByte := b.(byte)
+        switch </span>{
+        case aByte &gt; bByte:<span class="cov8" title="1">
+                return 1</span>
+        case aByte &lt; bByte:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func RuneComparator(a, b interface{}) int <span class="cov8" title="1">{
+        aRune := a.(rune)
+        bRune := b.(rune)
+        switch </span>{
+        case aRune &gt; bRune:<span class="cov8" title="1">
+                return 1</span>
+        case aRune &lt; bRune:<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func TimeComparator(a, b interface{}) int <span class="cov8" title="1">{
+        aTime := a.(time.Time)
+        bTime := b.(time.Time)
+        switch </span>{
+        case aTime.After(bTime):<span class="cov8" title="1">
+                return 1</span>
+        case aTime.Before(bTime):<span class="cov8" title="1">
+                return -1</span>
+        default:<span class="cov8" title="1">
+                return 0</span>
+        }
+}
+
+func StringComparator(a, b interface{}) int <span class="cov8" title="1">{
+        aString := a.(string)
+        bString := b.(string)
+        return strings.Compare(aString, bString)
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
