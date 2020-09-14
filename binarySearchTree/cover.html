@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/GoodSpeedZhao/bds/binarySearchTree/binarySearchTree.go (97.4%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package binarySearchTree
+
+import (
+        "errors"
+
+        "github.com/GoodSpeedZhao/bds/comparable"
+)
+
+type Node struct {
+        value interface{}
+        left  *Node
+        right *Node
+}
+
+type BinarySearchTree struct {
+        root *Node
+        size int
+        cmp  comparable.Comparator
+}
+
+func NewBinarySearchTree(comparator comparable.Comparator) *BinarySearchTree <span class="cov8" title="1">{
+        return &amp;BinarySearchTree{
+                root: nil,
+                size: 0,
+                cmp:  comparator,
+        }
+}</span>
+
+func NewNode(newVal interface{}) *Node <span class="cov8" title="1">{
+        return &amp;Node{
+                value: newVal,
+                left:  nil,
+                right: nil,
+        }
+}</span>
+
+func (bst *BinarySearchTree) Insert(newVal interface{}) (err error) <span class="cov8" title="1">{
+        if bst.root == nil </span><span class="cov8" title="1">{
+                bst.root = NewNode(newVal)
+                bst.size++
+                err = nil
+                return
+        }</span>
+
+        <span class="cov8" title="1">_, err = bst.insert(bst.root, newVal)
+        if err == nil </span><span class="cov8" title="1">{
+                bst.size++
+        }</span>
+        <span class="cov8" title="1">return</span>
+}
+
+func (bst *BinarySearchTree) insert(root *Node, newVal interface{}) (*Node, error) <span class="cov8" title="1">{
+        if root == nil </span><span class="cov8" title="1">{
+                return NewNode(newVal), nil
+        }</span> else<span class="cov8" title="1"> if root.value == newVal </span><span class="cov8" title="1">{
+                return nil, errors.New("Insert Failed. Already has val.")
+        }</span> else<span class="cov8" title="1"> if bst.cmp(root.value, newVal) == 1 </span><span class="cov8" title="1">{
+                if node, err := bst.insert(root.left, newVal); err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span> else<span class="cov8" title="1"> {
+                        root.left = node
+                }</span>
+        } else<span class="cov8" title="1"> {
+                if node, err := bst.insert(root.right, newVal); err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span> else<span class="cov8" title="1"> {
+                        root.right = node
+                }</span>
+        }
+
+        <span class="cov8" title="1">return root, nil</span>
+}
+
+func (bst *BinarySearchTree) Delete(val interface{}) (err error) <span class="cov8" title="1">{
+        if bst.IsEmpty() </span><span class="cov8" title="1">{
+                err = errors.New("BinarySearchTree is Empty")
+                return
+        }</span>
+
+        <span class="cov8" title="1">root, err := bst.delete(bst.root, val)
+        if err == nil </span><span class="cov8" title="1">{
+                bst.root = root
+                bst.size--
+        }</span>
+        <span class="cov8" title="1">return</span>
+}
+
+func (bst *BinarySearchTree) delete(root *Node, val interface{}) (*Node, error) <span class="cov8" title="1">{
+        if root == nil </span><span class="cov8" title="1">{
+                return nil, errors.New("Delete Failed. Not has val.")
+        }</span> else<span class="cov8" title="1"> if bst.cmp(root.value, val) == 1 </span><span class="cov8" title="1">{
+                if node, err := bst.delete(root.left, val); err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span> else<span class="cov8" title="1"> {
+                        root.left = node
+                }</span>
+        } else<span class="cov8" title="1"> if bst.cmp(root.value, val) == -1 </span><span class="cov8" title="1">{
+                if node, err := bst.delete(root.right, val); err != nil </span><span class="cov8" title="1">{
+                        return nil, err
+                }</span> else<span class="cov8" title="1"> {
+                        root.right = node
+                }</span>
+        } else<span class="cov8" title="1"> {
+                if root.left == nil </span><span class="cov8" title="1">{
+                        right := root.right
+                        root.right = nil
+                        return right, nil
+                }</span> else<span class="cov8" title="1"> if root.right == nil </span><span class="cov8" title="1">{
+                        left := root.left
+                        root.left = nil
+                        return left, nil
+                }</span> else<span class="cov8" title="1"> {
+                        newRoot := bst.findMin(root.right)
+                        newRoot.right = bst.deleteMin(root.right)
+                        newRoot.left = root.left
+                        root.left = nil
+                        root.right = nil
+                        return newRoot, nil
+                }</span>
+        }
+
+        <span class="cov8" title="1">return root, nil</span>
+}
+
+func (bst *BinarySearchTree) DeleteMin() error <span class="cov8" title="1">{
+        if bst.IsEmpty() </span><span class="cov8" title="1">{
+                return errors.New("BinarySearchTree is Empty")
+        }</span>
+
+        <span class="cov8" title="1">bst.root = bst.deleteMin(bst.root)
+        return nil</span>
+}
+
+func (bst *BinarySearchTree) deleteMin(root *Node) *Node <span class="cov8" title="1">{
+        if root.left == nil </span><span class="cov8" title="1">{
+                right := root.right
+                root.right = nil
+                return right
+        }</span>
+
+        <span class="cov8" title="1">root.left = bst.deleteMin(root.left)
+        return root</span>
+}
+
+func (bst *BinarySearchTree) DeleteMax() error <span class="cov8" title="1">{
+        if bst.IsEmpty() </span><span class="cov8" title="1">{
+                return errors.New("BinarySearchTree is Empty")
+        }</span>
+
+        <span class="cov8" title="1">bst.root = bst.deleteMax(bst.root)
+        bst.size--
+        return nil</span>
+}
+
+func (bst *BinarySearchTree) deleteMax(root *Node) *Node <span class="cov8" title="1">{
+        if root.right == nil </span><span class="cov8" title="1">{
+                left := root.left
+                root.left = nil
+                return left
+        }</span>
+
+        <span class="cov8" title="1">root.right = bst.deleteMax(root.right)
+        return root</span>
+}
+
+func (bst *BinarySearchTree) Contains(val interface{}) bool <span class="cov8" title="1">{
+        if bst.IsEmpty() </span><span class="cov8" title="1">{
+                return false
+        }</span>
+
+        <span class="cov8" title="1">return bst.contains(bst.root, val)</span>
+}
+
+func (bst *BinarySearchTree) contains(root *Node, val interface{}) bool <span class="cov8" title="1">{
+        if root == nil </span><span class="cov8" title="1">{
+                return false
+        }</span> else<span class="cov8" title="1"> if root.value == val </span><span class="cov8" title="1">{
+                return true
+        }</span> else<span class="cov8" title="1"> if bst.cmp(root.value, val) == 1 </span><span class="cov8" title="1">{
+                return bst.contains(root.left, val)
+        }</span> else<span class="cov8" title="1"> {
+                return bst.contains(root.right, val)
+        }</span>
+}
+
+func (bst *BinarySearchTree) FindMin() (interface{}, error) <span class="cov8" title="1">{
+        if bst.IsEmpty() </span><span class="cov8" title="1">{
+                return nil, errors.New("BinarySearchTree is Empty")
+        }</span>
+
+        <span class="cov8" title="1">node := bst.findMin(bst.root)
+        return node.value, nil</span>
+}
+
+func (bst *BinarySearchTree) findMin(root *Node) *Node <span class="cov8" title="1">{
+        for root.left != nil </span><span class="cov8" title="1">{
+                root = root.left
+        }</span>
+        <span class="cov8" title="1">return root</span>
+}
+
+func (bst *BinarySearchTree) FindMax() (interface{}, error) <span class="cov8" title="1">{
+        if bst.IsEmpty() </span><span class="cov8" title="1">{
+                return nil, errors.New("BinarySearchTree is Empty")
+        }</span>
+        <span class="cov8" title="1">node := bst.findMax(bst.root)
+        return node.value, nil</span>
+}
+
+func (bst *BinarySearchTree) findMax(root *Node) *Node <span class="cov8" title="1">{
+        for root.right != nil </span><span class="cov8" title="1">{
+                root = root.right
+        }</span>
+        <span class="cov8" title="1">return root</span>
+}
+
+func (bst *BinarySearchTree) IsEmpty() bool <span class="cov8" title="1">{
+        return bst.size == 0
+}</span>
+
+func (bst *BinarySearchTree) Size() int <span class="cov8" title="1">{
+        return bst.size
+}</span>
+
+func (bst *BinarySearchTree) Clear() <span class="cov8" title="1">{
+        if bst.IsEmpty() </span><span class="cov8" title="1">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">bst.clear(bst.root)
+        bst.root = nil
+        bst.size = 0</span>
+}
+
+func (bst *BinarySearchTree) clear(root *Node) <span class="cov8" title="1">{
+        if root == nil </span><span class="cov8" title="1">{
+                return
+        }</span>
+
+        <span class="cov8" title="1">bst.clear(root.left)
+        bst.clear(root.right)
+        root.left = nil
+        root.right = nil</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
