@@ -18,10 +18,16 @@ func NewDeque() *Deque {
 	}
 }
 
-func NewDequeWithCapacity(cap int) *Deque {
+func NewDequeWithCapacity(capacity int) *Deque {
+	if capacity < 0 {
+		capacity = 0
+	} else if capacity > math.MaxUint32 {
+		capacity = math.MaxUint32
+	}
+
 	return &Deque{
 		dataStore: list.New(),
-		capacity:  cap,
+		capacity:  capacity,
 	}
 }
 
