@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/GoodSpeedZhao/bds/dlinkList/dlinkList.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package dlinkList
+
+import (
+        "errors"
+)
+
+type DLinkList struct {
+        head *Node
+        tail *Node
+        size int
+}
+
+type Node struct {
+        val  interface{}
+        next *Node
+        pre  *Node
+}
+
+func NewDLinkList() *DLinkList <span class="cov8" title="1">{
+        return &amp;DLinkList{
+                head: nil,
+                tail: nil,
+                size: 0,
+        }
+}</span>
+
+func NewNode(newVal interface{}) *Node <span class="cov8" title="1">{
+        return &amp;Node{
+                val:  newVal,
+                next: nil,
+                pre:  nil,
+        }
+}</span>
+
+func (dll *DLinkList) Get(index int) (interface{}, error) <span class="cov8" title="1">{
+        if !dll.withinRange(index) </span><span class="cov8" title="1">{
+                return nil, errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">if dll.size-index &gt; index </span><span class="cov8" title="1">{
+                e := dll.head
+                for i := 0; i &lt; index; i, e = i+1, e.next </span>{<span class="cov8" title="1">
+                }</span>
+                <span class="cov8" title="1">return e.val, nil</span>
+        } else<span class="cov8" title="1"> {
+                e := dll.tail
+                for i := dll.size - 1; i &gt; index; i, e = i-1, e.pre </span>{<span class="cov8" title="1">
+                }</span>
+                <span class="cov8" title="1">return e.val, nil</span>
+        }
+}
+
+func (dll *DLinkList) Set(index int, newVal interface{}) error <span class="cov8" title="1">{
+        if !dll.withinRange(index) </span><span class="cov8" title="1">{
+                return errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">if dll.size-index &gt; index </span><span class="cov8" title="1">{
+                e := dll.head
+                for i := 0; i &lt; index; i, e = i+1, e.next </span>{<span class="cov0" title="0">
+                }</span>
+                <span class="cov8" title="1">e.val = newVal</span>
+        } else<span class="cov8" title="1"> {
+                e := dll.tail
+                for i := dll.size - 1; i &gt; index; i, e = i-1, e.pre </span>{<span class="cov0" title="0">
+                }</span>
+                <span class="cov8" title="1">e.val = newVal</span>
+        }
+        <span class="cov8" title="1">return nil</span>
+}
+
+func (dll *DLinkList) Insert(index int, newVal ...interface{}) error <span class="cov8" title="1">{
+        if !dll.withinRange(index) </span><span class="cov8" title="1">{
+                return errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">if index == dll.size-1 </span><span class="cov8" title="1">{
+                dll.Append(newVal...)
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">var e *Node
+        if dll.size-index &gt; index </span><span class="cov8" title="1">{
+                e = dll.head
+                for i := 0; i &lt; index; i, e = i+1, e.next </span>{<span class="cov8" title="1">
+                }</span>
+        } else<span class="cov8" title="1"> {
+                e = dll.tail
+                for i := dll.size - 1; i &gt; index; i, e = i-1, e.pre </span>{<span class="cov8" title="1">
+                }</span>
+        }
+
+        <span class="cov8" title="1">for _, val := range newVal </span><span class="cov8" title="1">{
+                tmp := new(Node)
+                tmp.val = val
+                tmp.pre = e
+                tmp.next = e.next
+
+                e.next.pre = tmp
+                e.next = tmp
+                e = tmp
+        }</span>
+
+        <span class="cov8" title="1">dll.size += len(newVal)
+
+        return nil</span>
+}
+
+func (dll *DLinkList) Delete(index int) error <span class="cov8" title="1">{
+        if !dll.withinRange(index) </span><span class="cov8" title="1">{
+                return errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">if dll.size == 1 </span><span class="cov8" title="1">{
+                dll.Clear()
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">var e *Node
+        if dll.size-index &gt; index </span><span class="cov8" title="1">{
+                e = dll.head
+                for i := 0; i &lt; index; i, e = i+1, e.next </span>{<span class="cov8" title="1">
+                }</span>
+        } else<span class="cov8" title="1"> {
+                e = dll.tail
+                for i := dll.size - 1; i &gt; index; i, e = i-1, e.pre </span>{<span class="cov0" title="0">
+                }</span>
+        }
+        <span class="cov8" title="1">if e == dll.head </span><span class="cov8" title="1">{
+                dll.head = e.next
+                dll.head.pre = nil
+
+                e.pre = nil
+                e.next = nil
+        }</span> else<span class="cov8" title="1"> if e == dll.tail </span><span class="cov8" title="1">{
+                dll.tail = e.pre
+                dll.tail.next = nil
+
+                e.pre = nil
+                e.next = nil
+        }</span> else<span class="cov8" title="1"> {
+                e.pre.next = e.next
+                e.next.pre = e.pre
+
+                e.pre = nil
+                e.next = nil
+        }</span>
+        <span class="cov8" title="1">e = nil
+
+        dll.size--
+
+        return nil</span>
+}
+
+func (dll *DLinkList) DeleteNode(node *Node) error <span class="cov8" title="1">{
+        if node == nil </span><span class="cov8" title="1">{
+                return errors.New("node is nil.")
+        }</span>
+
+        <span class="cov8" title="1">if node == dll.head </span><span class="cov8" title="1">{
+                dll.head = node.next
+                if dll.head != nil </span><span class="cov8" title="1">{
+                        dll.head.pre = nil
+                }</span>
+
+                <span class="cov8" title="1">node.pre = nil
+                node.next = nil</span>
+        } else<span class="cov8" title="1"> if node == dll.tail </span><span class="cov8" title="1">{
+                dll.tail = node.pre
+                dll.tail.next = nil
+
+                node.pre = nil
+                node.next = nil
+        }</span> else<span class="cov8" title="1"> {
+                node.pre.next = node.next
+                node.next.pre = node.pre
+
+                node.pre = nil
+                node.next = nil
+        }</span>
+
+        <span class="cov8" title="1">dll.size--
+
+        return nil</span>
+}
+
+func (dll *DLinkList) Append(newVal ...interface{}) <span class="cov8" title="1">{
+        e := dll.tail
+        for _, val := range newVal </span><span class="cov8" title="1">{
+                tmp := new(Node)
+                tmp.val = val
+                if dll.head == nil &amp;&amp; dll.tail == nil </span><span class="cov8" title="1">{
+                        dll.head = tmp
+                        dll.tail = tmp
+                        e = tmp
+                }</span> else<span class="cov8" title="1"> {
+                        tmp.pre = e
+                        e.next = tmp
+                        e = tmp
+                }</span>
+        }
+        <span class="cov8" title="1">dll.tail = e
+
+        dll.size += len(newVal)</span>
+}
+
+func (dll *DLinkList) Prepend(newVal ...interface{}) <span class="cov8" title="1">{
+        e := dll.head
+        for _, val := range newVal </span><span class="cov8" title="1">{
+                tmp := new(Node)
+                tmp.val = val
+                if dll.head == nil &amp;&amp; dll.tail == nil </span><span class="cov8" title="1">{
+                        dll.head = tmp
+                        dll.tail = tmp
+                        e = tmp
+                }</span> else<span class="cov8" title="1"> {
+                        tmp.next = e
+                        e.pre = tmp
+                        e = tmp
+                }</span>
+        }
+        <span class="cov8" title="1">dll.head = e
+
+        dll.size += len(newVal)</span>
+}
+
+func (dll *DLinkList) Contains(values ...interface{}) bool <span class="cov8" title="1">{
+        if len(values) == 0 </span><span class="cov8" title="1">{
+                return true
+        }</span>
+
+        <span class="cov8" title="1">if dll.size == 0 </span><span class="cov8" title="1">{
+                return false
+        }</span>
+
+        <span class="cov8" title="1">for _, val := range values </span><span class="cov8" title="1">{
+                var e *Node
+                for e = dll.head; e != nil; e = e.next </span><span class="cov8" title="1">{
+                        if val == e.val </span><span class="cov8" title="1">{
+                                break</span>
+                        }
+                }
+                <span class="cov8" title="1">if e == nil </span><span class="cov8" title="1">{
+                        return false
+                }</span>
+        }
+
+        <span class="cov8" title="1">return true</span>
+}
+
+func (dll *DLinkList) Clear() <span class="cov8" title="1">{
+        dll.head = nil
+        dll.tail = nil
+        dll.size = 0
+}</span>
+
+func (dll *DLinkList) Swap(i, j int) error <span class="cov8" title="1">{
+        if !dll.withinRange(i) || !dll.withinRange(j) </span><span class="cov8" title="1">{
+                return errors.New("out of range.")
+        }</span>
+
+        <span class="cov8" title="1">if i == j </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+
+        <span class="cov8" title="1">var elementI, elementJ *Node
+        for count, e := 0, dll.head; elementI == nil || elementJ == nil; count, e = count+1, e.next </span><span class="cov8" title="1">{
+                switch count </span>{
+                case i:<span class="cov8" title="1">
+                        elementI = e</span>
+                case j:<span class="cov8" title="1">
+                        elementJ = e</span>
+                }
+        }
+        <span class="cov8" title="1">elementI.val, elementJ.val = elementJ.val, elementI.val
+        return nil</span>
+}
+
+func (dll *DLinkList) Size() int <span class="cov8" title="1">{
+        return dll.size
+}</span>
+
+func (dll *DLinkList) IsEmpty() bool <span class="cov8" title="1">{
+        return dll.size == 0
+}</span>
+
+func (dll *DLinkList) withinRange(index int) bool <span class="cov8" title="1">{
+        return index &gt;= 0 &amp;&amp; index &lt; dll.size
+}</span>
+
+func (dll *DLinkList) HeadNode() *Node <span class="cov8" title="1">{
+        return dll.head
+}</span>
+
+func (dll *DLinkList) TailNode() *Node <span class="cov8" title="1">{
+        return dll.tail
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
