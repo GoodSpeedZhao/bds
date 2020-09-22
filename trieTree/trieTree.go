@@ -184,10 +184,3 @@ func (tt *TrieTree) IsEmpty() bool {
 func (tt *TrieTree) Size() int {
 	return tt.size
 }
-
-func TrieTreeTest() {
-	got := NewTrieTree()
-	insert := []string{"a"}
-	got.Insert(insert...)
-	got.Clear()
-}
